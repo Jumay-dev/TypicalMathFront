@@ -1,32 +1,44 @@
 <template>
-  <div id="app">
-    <h1>Выберите типовую задачу</h1>
-    <hr>
-    <GridTasks :tasks="tasks"/>
-  </div>
+  <router-view :tasks="tasks" :isLoading="isLoading" />
 </template>
 
 <script>
-import GridTasks from "./components/GridTasks"
-
 export default {
   name: 'App',
-  components: {
-    GridTasks
-  },
   data() {
     return {
-      tasks: [  //Временно на front, реально будем получать с back
-        {id: 0, title: "Расчет маневра", subtitle: "Кватернионы", text: "Описание задачи будет реализовано здесь"},
-        {id: 1, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-        {id: 2, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-        {id: 3, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-        {id: 4, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-        {id: 5, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-        {id: 6, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-        {id: 7, title: "Название задачи", subtitle: "Тип матаппарата", text: "Описание задачи будет реализовано здесь"},
-      ]
+      tasks: [],
+      isLoading: false
     }
+  },
+  async mounted() {
+    this.isLoading = true
+    console.log('started')
+    let serverData = await request("http://localhost:3000/api/tasks")
+    console.log('finished')
+    this.tasks = serverData
+    this.isLoading = false
+  }
+}
+
+async function request(url, method = 'GET', data = null) {
+  try {
+    const headers = {}
+    let body
+
+    if (data) {
+      headers['Content-Type'] = 'application/json'
+      body = JSON.stringify(data)
+    }
+
+    const response = await fetch(url, {
+      method,
+      headers,
+      body
+    })
+    return await response.json()
+  } catch (e) {
+    console.warn('Error:', e.message)
   }
 }
 </script>

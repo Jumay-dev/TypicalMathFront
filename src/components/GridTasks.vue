@@ -4,7 +4,7 @@
       <TypTask 
         :task="task" 
         v-for="task in tasks" 
-        :key="task.id"
+        :key="task['id']"
       />
   </div>
 </div>    
