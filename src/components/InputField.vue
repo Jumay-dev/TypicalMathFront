@@ -2,12 +2,13 @@
     <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
         <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">{{val.varb}}</span>
+            <span class="input-group-text" id="basic-addon1">{{field.varb}}</span>
         </div>
         <input type="text" 
         class="form-control " 
-        :placeholder=val.measure
-        :value=val.val
+        :placeholder=field.measure
+        @input="changeValue"
+        v-model="inpValue"
         >
         </div>        
     </div>
@@ -15,7 +16,22 @@
 
 <script>
 export default {
-    props: [ "val" ],
+    props: [ "field" ],
+    data() {
+        return {
+            inpValue: this.field.val,
+            inpVarb: this.field.varb
+        }
+    },
+    methods: {
+        changeValue() {
+            this.$emit('updateForm', {
+                // [this.inpVarb]: this.inpValue
+                sendVarb: this.inpVarb,
+                sendVal: this.inpValue
+            })
+        }
+    }
 }
 </script>
 

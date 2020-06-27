@@ -13,9 +13,7 @@ export default {
   },
   async mounted() {
     this.isLoading = true
-    console.log('started')
     let serverData = await request("http://localhost:3000/api/tasks")
-    console.log('finished')
     this.tasks = serverData
     this.isLoading = false
   }

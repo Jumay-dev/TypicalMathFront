@@ -1,10 +1,10 @@
 <template>
 <div class="container">
   <div class="row" >
-      <TypTask 
-        :task="task" 
+      <TypTask  
         v-for="task in tasks" 
         :key="task['id']"
+        :task="task"
       />
   </div>
 </div>    
